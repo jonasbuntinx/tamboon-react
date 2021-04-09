@@ -19,4 +19,7 @@ $ yarn client
 
 # build for production
 $ yarn bundle
+
+# test
+$ yarn test
 ```

@@ -59,6 +59,22 @@ function App(): JSX.Element {
     [getPayments]
   );
 
+  const makePayment = React.useCallback(
+    (charity, amount) =>
+      postPayment({
+        charitiesId: charity.id,
+        amount: amount,
+        currency: charity.currency,
+      }).then(() => {
+        dispatch({ tag: "ShowMessage", message: "Your payment has been completed" });
+        setTimeout(function () {
+          dispatch({ tag: "HideMessage" });
+        }, 3000);
+        getDonations();
+      }),
+    [postPayment, getDonations]
+  );
+
   React.useEffect(() => {
     getCharities();
     getDonations();
@@ -89,19 +105,7 @@ function App(): JSX.Element {
                             <Donate
                               currency={charity.currency}
                               onClose={() => dispatch({ tag: "SelectCharity", selectedCharity: undefined })}
-                              onClick={amount =>
-                                postPayment({
-                                  charitiesId: charity.id,
-                                  amount: amount,
-                                  currency: charity.currency,
-                                }).then(() => {
-                                  dispatch({ tag: "ShowMessage", message: "Your payment has been completed" });
-                                  setTimeout(function () {
-                                    dispatch({ tag: "HideMessage" });
-                                  }, 3000);
-                                  getDonations();
-                                })
-                              }
+                              onClick={amount => makePayment(charity, amount)}
                             />
                           ) : null
                         }
@@ -121,7 +125,6 @@ function App(): JSX.Element {
             <></>
           )
         )}
-        <br />
       </div>
     </div>
   );

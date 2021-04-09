@@ -12,7 +12,7 @@ $ yarn
 $ yarn build
 
 # run server at localhost:3001
-$ yarn client
+$ yarn server
 
 # run client with hot reload at localhost:1234
 $ yarn client
